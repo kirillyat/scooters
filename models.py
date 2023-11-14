@@ -4,12 +4,8 @@ Contains described models.
 
 from typing import List
 import abc
+import json
 import dataclasses
-
-class SolverABC(abc.ABC):
-    @abc.abstractmethod
-    def solve() -> List[int]:
-        pass
 
 
 @dataclasses.dataclass
@@ -26,8 +22,11 @@ class Coordinates:
     def __mul__(self, m):
         return Coordinates(self.lat * m, self.lon * m)
 
-    def __div__(self, d):
+    def __truediv__(self, d):
         return Coordinates(self.lat / d, self.lon / d)
+
+    def __iter__(self):
+        return iter((self.lat, self.lon))
 
 
 @dataclasses.dataclass
@@ -44,6 +43,7 @@ class RequestPoint:
 class Request:
     capacity: int
     time_left: int
+    penalty: int
     points: List[RequestPoint]
     time_matrix: List[List[int]]
 
@@ -57,12 +57,17 @@ class Request:
 
     @property
     def center(self) -> Coordinates:
-        return sum(p.position for p in self.points) / self.points_number
+        return (
+            sum([p.position for p in self.points], start=Coordinates(0, 0))
+            / self.points_number
+        )
 
-    def move(self, new_center: Coordinates):
-        delta = new_center - self.center
+    def move(self, delta: Coordinates):
         for p in self.points:
-            p.position = p.position - delta
+            p.position -= delta
+
+    def delta(self, coord: Coordinates) -> Coordinates:
+        return self.center - coord
 
     @property
     def priorities(self) -> List[int]:
@@ -73,7 +78,22 @@ class Request:
         return cls(
             capacity=int(data["capacity"]),
             time_left=int(data["time_left"]),
+            penalty=int(data["penalty"]),
             points=[RequestPoint.from_dict(p) for p in data["points"]],
             time_matrix=data["time_matrix"],
         )
 
+    def cost(self, itenerary: List[int]) -> int:
+        # return sum([for zip()])
+        pass
+
+    @classmethod
+    def from_file(cls, path: str) -> "Request":
+        with open(path, "r") as f:
+            return cls.from_dict(json.load(f))
+
+
+class SolverABC(abc.ABC):
+    @abc.abstractmethod
+    def solve(r: Request) -> List[int]:
+        pass
