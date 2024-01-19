@@ -94,8 +94,11 @@ class Request:
 
     def move(self, delta: Coordinates):
         for p in self.scooters:
-            p -= delta
-
+            p += delta
+    
+    def move_to(self, new_center: Coordinates):
+        self.move(self.delta(new_center))
+    
     def delta(self, coord: Coordinates) -> Coordinates:
         return self.center - coord
 
