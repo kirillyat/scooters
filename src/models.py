@@ -88,11 +88,10 @@ class Request:
     def M(self) -> int:
         return self.time_matrix
 
-
     def move(self, delta: Coordinates):
         for p in self.scooters:
             p += delta
-    
+
     def move_to(self, new_center: Coordinates):
         delta = self.center - new_center
         for scooter in self.scooters:
@@ -101,9 +100,10 @@ class Request:
 
     @property
     def center(self) -> Coordinates:
-        return sum((scooter for scooter in self.scooters), start=Scooter(0, 0, 0)) / len(self.scooters)
+        return sum(
+            (scooter for scooter in self.scooters), start=Scooter(0, 0, 0)
+        ) / len(self.scooters)
 
-    
     def delta(self, coord: Coordinates) -> Coordinates:
         return self.center - coord
 
@@ -133,16 +133,19 @@ class Request:
         """
         # TODO: Уточтинить нужно ли чтобы маршрут начинался и заканчивался в нулевой точке
 
-        if len(itenerary) - itenerary.count(0) > self.capacity:
+        if len(itenerary)-2 > self.capacity:
             return False
-        itenerary_time = 0
-        prev = 0
-        for i in itenerary:
-            itenerary_time += self.time_matrix[prev][i]
-            prev = i
-        return itenerary_time <= self.time
+        return self.cost(itenerary) <= self.time
 
     def cost(self, itenerary: List[int]) -> float:
+        prev = 0
+        cost = 0
+        for i in itenerary:
+            cost += self.time_matrix[prev][i]
+            prev = i
+        return cost
+
+    def score(self, itenerary: List[int]) -> float:
         """
         Подсчет стоимости маршрута.
         Args:
