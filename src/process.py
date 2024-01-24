@@ -1,11 +1,12 @@
 import os
 import glob
 
-from src.models import Request
-from src.antcolony import AntAlgorithm
+from models import Request
+from antcolony import AntAlgorithm
 from progress.bar import IncrementalBar
 
 def process_file(input_file):
+    print("Processing", input_file)
     request = Request.from_txt(path=input_file)
     ant_algo = AntAlgorithm(request)
     return ant_algo.run()
@@ -14,7 +15,7 @@ def process_file(input_file):
 def main(directory):
     os.chdir(directory)
     files = glob.glob("input*.txt")
-    bar = IncrementalBar('Прогресс:', max = len(files))
+    #bar = IncrementalBar('Прогресс:', max = len(files))
 
     for input_file in files:
         
@@ -24,8 +25,8 @@ def main(directory):
             file.write(str(len(data) - 1))
             file.write("\n")
             file.write(" ".join([str(i) for i in data][1:]))
-        bar.next()
-    bar.finish()
+        #bar.next()
+    #bar.finish()
 
 if __name__ == "__main__":
     directory = input("Введите путь к директории: ")

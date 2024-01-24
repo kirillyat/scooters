@@ -10,9 +10,9 @@ class AntAlgorithm:
     def __init__(
         self,
         request: Request,
-        n_ants=100,
-        n_iterations=100,
-        alpha=1,
+        n_ants=200,
+        n_iterations=20,
+        alpha=2,
         beta=1,
         evaporation_rate=0.5,
     ):
@@ -49,7 +49,7 @@ class AntAlgorithm:
 
     def _construct_solution(self):
         tabu_list = [0]
-        while len(tabu_list) < self.request.capacity:
+        while len(tabu_list) <= self.request.capacity:
             current_city = tabu_list[-1]
             next_city = self._select_next_city(current_city, tabu_list)
             if (self.request.time - self.request.cost(tabu_list + [next_city])) >= 0:

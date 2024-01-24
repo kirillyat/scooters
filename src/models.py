@@ -88,16 +88,21 @@ class Request:
     def M(self) -> int:
         return self.time_matrix
 
-    @property
-    def center(self) -> Coordinates:
-        return sum(self.scooters, start=Scooter(0, 0, 0)) / self.points_number
 
     def move(self, delta: Coordinates):
         for p in self.scooters:
             p += delta
     
     def move_to(self, new_center: Coordinates):
-        self.move(self.delta(new_center))
+        delta = self.center - new_center
+        for scooter in self.scooters:
+            scooter.lat -= delta.lat
+            scooter.lon -= delta.lon
+
+    @property
+    def center(self) -> Coordinates:
+        return sum((scooter for scooter in self.scooters), start=Scooter(0, 0, 0)) / len(self.scooters)
+
     
     def delta(self, coord: Coordinates) -> Coordinates:
         return self.center - coord
@@ -149,7 +154,6 @@ class Request:
             cost += self.scooters[i].priority
             cost -= self.time_matrix[prev][i] * self.penalty
             prev = i
-
         return cost
 
     @classmethod
