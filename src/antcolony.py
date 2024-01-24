@@ -3,7 +3,7 @@
 """
 
 import numpy as np
-from models import Request
+from src.models import Request
 
 
 class AntAlgorithm:
