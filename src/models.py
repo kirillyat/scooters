@@ -132,7 +132,8 @@ class Request:
             itenerary: Номера вершин(самокатов) в порядке их посещения.
         """
         # TODO: Уточтинить нужно ли чтобы маршрут начинался и заканчивался в нулевой точке
-        if len(itenerary) > self.capacity:
+
+        if len(itenerary) - itenerary.count(0) > self.capacity:
             return False
         itenerary_time = 0
         prev = 0

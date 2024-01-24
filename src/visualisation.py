@@ -8,18 +8,21 @@ import matplotlib.pyplot as plt
 from src.models import Request
 
 
-def GeoMap(r: Request, route: Optional[List[int]] = None) -> folium.Map:
+def GeoMap(r: Request, route: Optional[List[int]] = None, rote_only: bool = False) -> folium.Map:
     M = folium.Map(location=list(r.center), zoom_start=11)
 
     for i, point in enumerate(r.scooters):
-        if route and i in route:
+        if i == 0:
+            color = "darkred"
+        elif route and i in route:
             color = "green"
         else:
             color = "blue"
-        folium.Marker(
-            location=[point.lat, point.lon],
-            icon=folium.Icon(icon="star", color=color),
-        ).add_to(M)
+        if not rote_only or i in route:
+            folium.Marker(
+                location=[point.lat, point.lon],
+                icon=folium.Icon(icon="star", color=color),
+            ).add_to(M)
     if route:
         folium.PolyLine(
             locations=[list(r.scooters[i]) for i in route],
