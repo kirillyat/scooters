@@ -14,27 +14,27 @@ class Coordinates:
     """
     Сласс координаты
     Attributes:
-        lat: Широта.
         lon: Долгота.
+        lat: Широта.
     """
 
-    lat: float
     lon: float
+    lat: float
 
     def __add__(self, coord: "Coordinates") -> "Coordinates":
-        return Coordinates(self.lat + coord.lat, self.lon + coord.lon)
+        return Coordinates(lat=self.lat + coord.lat, lon=self.lon + coord.lon)
 
     def __sub__(self, coord: "Coordinates") -> "Coordinates":
-        return Coordinates(self.lat - coord.lat, self.lon - coord.lon)
+        return Coordinates(lat=self.lat - coord.lat, lon=self.lon - coord.lon)
 
     def __mul__(self, m):
-        return Coordinates(self.lat * m, self.lon * m)
+        return Coordinates(lat=self.lat * m, lon=self.lon * m)
 
     def __truediv__(self, d):
-        return Coordinates(self.lat / d, self.lon / d)
+        return Coordinates(lat=self.lat / d, lon=self.lon / d)
 
     def __iter__(self):
-        return iter((self.lat, self.lon))
+        return iter((self.lon, self.lat))
 
 
 @dataclasses.dataclass
