@@ -133,9 +133,15 @@ class Request:
         """
         # TODO: Уточтинить нужно ли чтобы маршрут начинался и заканчивался в нулевой точке
 
-        if len(itenerary)-2 > self.capacity:
+        if len(itenerary) - 2 > self.capacity:
             return False
         return self.cost(itenerary) <= self.time
+
+    def scores(self, iteneraries: List[List[int]]) -> List[float]:
+        return [self.score(itenerary) for itenerary in iteneraries]
+
+    def costs(self, iteneraries: List[List[int]]) -> List[float]:
+        return [self.cost(itenerary) for itenerary in iteneraries]
 
     def cost(self, itenerary: List[int]) -> float:
         prev = 0
