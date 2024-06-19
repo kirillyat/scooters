@@ -14,27 +14,27 @@ class Coordinates:
     """
     Сласс координаты
     Attributes:
-        lon: Долгота.
-        lat: Широта.
+       lon: Долгота.
+       lat: Широта.
     """
 
     lon: float
     lat: float
 
     def __add__(self, coord: "Coordinates") -> "Coordinates":
-        return Coordinates(lat=self.lat + coord.lat, lon=self.lon + coord.lon)
+        return Coordinates(self.lon + coord.lon, self.lat + coord.lat)
 
     def __sub__(self, coord: "Coordinates") -> "Coordinates":
-        return Coordinates(lat=self.lat - coord.lat, lon=self.lon - coord.lon)
+        return Coordinates(self.lon - coord.lon, self.lat - coord.lat)
 
     def __mul__(self, m):
-        return Coordinates(lat=self.lat * m, lon=self.lon * m)
+        return Coordinates(self.lon * m, self.lat * m)
 
     def __truediv__(self, d):
-        return Coordinates(lat=self.lat / d, lon=self.lon / d)
+        return Coordinates(self.lon / d, self.lat / d)
 
     def __iter__(self):
-        return iter((self.lon, self.lat))
+       return iter((self.lon, self.lat))
 
 
 @dataclasses.dataclass
@@ -178,7 +178,7 @@ class Request:
             scooters = []
             for _ in range(n + 1):
                 line = f.readline().strip().split()
-                scooters.append(Scooter(*map(float, line[:2]), int(line[2])))
+                scooters.append(Scooter(*map(float, line[:2:]), int(line[2])))
 
             time_matrix = [
                 list(map(int, f.readline().strip().split())) for _ in range(n + 1)
@@ -199,3 +199,4 @@ class SolverABC(abc.ABC):
     @abc.abstractmethod
     def solve(r: Request) -> List[int]:
         pass
+

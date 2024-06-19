@@ -1,6 +1,7 @@
-numpy
-progress
 folium
-networkx
-matplotlib
 geopy
+matplotlib
+networkx
+numpy
+ortools
+progress
