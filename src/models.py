@@ -131,8 +131,6 @@ class Request:
         Args:
             itenerary: Номера вершин(самокатов) в порядке их посещения.
         """
-        # TODO: Уточтинить нужно ли чтобы маршрут начинался и заканчивался в нулевой точке
-
         if len(itenerary) - 2 > self.capacity:
             return False
         return self.cost(itenerary) <= self.time
@@ -144,6 +142,7 @@ class Request:
         return [self.cost(itenerary) for itenerary in iteneraries]
 
     def cost(self, itenerary: List[int]) -> float:
+        
         prev = 0
         cost = 0
         for i in itenerary:
@@ -157,7 +156,6 @@ class Request:
         Args:
             itenerary: Номера вершин(самокатов) в порядке их посещения.
         """
-        # TODO: Уточтинить нужно ли чтобы маршрут начинался и заканчивался в нулевой точке
         cost = 0
         prev = 0
         for i in itenerary:
@@ -193,10 +191,3 @@ class Request:
                 time=time,
                 time_matrix=time_matrix,
             )
-
-
-class SolverABC(abc.ABC):
-    @abc.abstractmethod
-    def solve(r: Request) -> List[int]:
-        pass
-
